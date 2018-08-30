@@ -277,7 +277,7 @@ subroutine qm2_get_qm_forces(dxyzqm)
      if (qmmm_nml%qmtheory%PM3 .OR. qmmm_nml%qmtheory%PDDGPM3 .OR. qmmm_nml%qmtheory%PM3CARB1 &
          .OR. qmmm_nml%qmtheory%PM3ZNB .OR. qmmm_nml%qmtheory%PDDGPM3_08) then
        htype = 7.1853D0                                                      
-     elseif (qmmm_nml%qmtheory%AM1 .OR. qmmm_nml%qmtheory%RM1) then
+     elseif (qmmm_nml%qmtheory%AM1 .OR. qmmm_nml%qmtheory%AM1DHFR .OR. qmmm_nml%qmtheory%RM1) then
        htype = 3.3191D0                                                      
      else !Assume MNDO
        htype = 6.1737D0                                                      

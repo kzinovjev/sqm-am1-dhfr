@@ -330,7 +330,7 @@ subroutine qm2_energy(escf,scf_mchg,natom,born_radii, one_born_radii, coords, sc
          if (qmmm_nml%qmtheory%PM3 .OR. qmmm_nml%qmtheory%PDDGPM3 .OR. qmmm_nml%qmtheory%PM3CARB1 &
              .OR. qmmm_nml%qmtheory%PM3ZNB .OR. qmmm_nml%qmtheory%PDDGPM3_08) then
             htype = 7.1853D0                                                      
-         elseif (qmmm_nml%qmtheory%AM1 .OR. qmmm_nml%qmtheory%RM1) then
+         elseif (qmmm_nml%qmtheory%AM1 .OR. qmmm_nml%qmtheory%AM1DHFR .OR. qmmm_nml%qmtheory%RM1) then
             htype = 3.3191D0 !Note for RM1 this may or may not be any good since they make no mention of
                              !it in the underlying manuscript.
          else !Assume MNDO

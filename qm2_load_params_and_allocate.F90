@@ -820,6 +820,159 @@
 !--------------------------------------
 
 !--------------------------------------
+!           AM1/DHFR PARAMS           *
+!--------------------------------------
+      else if (qmmm_nml%qmtheory%AM1DHFR) then
+        do i = 1,qmmm_struct%nquant_nlink
+          iqm_atomic=qmmm_struct%iqm_atomic_numbers(i)
+! Check that parameters exist for this element in AM1/DHFR
+          if (.NOT. element_supported_am1dhfr(iqm_atomic)) then
+             write(6,'("QMMM: Atom number: ",i6," has atomic number ",i4,".")') i, iqm_atomic
+             write(6,'("QMMM: There are no AM1/DHFR parameters for this element. Sorry.")')
+             call sander_bomb('qm2_load_params_and_allocate', &
+                              'UNSUPPORTED ELEMENT', &
+                              'QM AM1/DHFR NOT AVAILABLE FOR THIS ATOM')
+          end if
+
+          !----------------------------------------
+          ! Calculate parameters that are actually
+          ! derived from other parameters.
+          !----------------------------------------
+
+          !1) Electronic Energy (EISOL)
+          !   elec_eng = USS*IOS + UPP*IOP + UDD*IOD + GSS*GSSC + GPP*GPPC + GSP*GSPC + GP2*GP2C
+          !            + HSP*HSPC
+          iostmp = ios(iqm_atomic)
+          ioptmp = iop(iqm_atomic)
+          gssc = dble(max(iostmp-1,0))
+          gspc = dble(iostmp * ioptmp)
+          gp2c = dble((ioptmp * (ioptmp - 1))/2) &
+                 + 0.5d0*dble(min(ioptmp,6-ioptmp)*(min(ioptmp,6-ioptmp)-1)/2)
+          gppc = -0.5d0*dble(min(ioptmp,6-ioptmp)*(min(ioptmp,6-ioptmp)-1)/2)
+          hspc = dble(-ioptmp)
+          elec_eng = uss_am1dhfr(iqm_atomic)*iostmp + upp_am1dhfr(iqm_atomic)*ioptmp &
+                   + gss_am1dhfr(iqm_atomic)*gssc + gsp_am1dhfr(iqm_atomic)*gspc &
+                   + gpp_am1dhfr(iqm_atomic)*gppc + gp2_am1dhfr(iqm_atomic)*gp2c &
+                   + hsp_am1dhfr(iqm_atomic)*hspc
+
+          !2) multip_2c_elec_params(1-5,i) (DD,QQ,AM,AD,AQ)
+          !   DD = (( (4.0d0*s_orb_exp*p_orb_exp)**(nsshell+0.5d0) ) * (2.0d0*nsshell + 1)) &
+          !       / (( (s_orb_exp + p_orb_exp)**(2.0d0*nsshell + 2.0d0) ) * sqrt(3.0d0))
+          !
+          !   QQ = sqrt((4.0d0*nsshell**2+6.0d0*nsshell+2.0d0)/20.0d0)/p_orb_exp
+          !   AM = GSS/AU_TO_EV
+          if (p_orb_exp_am1dhfr(iqm_atomic) .ne. 0.0d0 .or. &
+              s_orb_exp_am1dhfr(iqm_atomic) .ne. 0.0d0) then
+              exponent_temp1 = nsshell(iqm_atomic)+0.5d0
+              base_temp1 = 4.0d0*s_orb_exp_am1dhfr(iqm_atomic)*p_orb_exp_am1dhfr(iqm_atomic)
+              exponent_temp2 = 2.0d0*nsshell(iqm_atomic) + 2.0d0
+              base_temp2 = s_orb_exp_am1dhfr(iqm_atomic) + p_orb_exp_am1dhfr(iqm_atomic)
+              qm2_params%multip_2c_elec_params(1,i) = ((base_temp1**exponent_temp1)*(2.0d0*nsshell(iqm_atomic) + 1.0d0)) &
+                                                      / ((base_temp2**exponent_temp2) * sqrt(3.0d0))
+              qm2_params%multip_2c_elec_params(2,i) = &
+                     sqrt((4.0d0*nsshell(iqm_atomic)**2+6.0d0*nsshell(iqm_atomic) &
+                    +2.0d0)/20.0d0)/p_orb_exp_am1dhfr(iqm_atomic)
+          else
+            qm2_params%multip_2c_elec_params(1,i)= 0.0d0
+            qm2_params%multip_2c_elec_params(2,i)= 0.0d0
+          end if
+          if (GSS_am1dhfr(iqm_atomic) .ne. 0.0d0 ) then
+            qm2_params%multip_2c_elec_params(3,i) = (0.5d0*AU_TO_EV)/GSS_am1dhfr(iqm_atomic) !AM
+          else
+            qm2_params%multip_2c_elec_params(3,i) = 0.0d0
+          end if
+          ! Calculation of AD and AQ
+          if (iqm_atomic == 1) then
+            qm2_params%multip_2c_elec_params(4,i) = qm2_params%multip_2c_elec_params(3,i) !AD for H
+            qm2_params%multip_2c_elec_params(5,i) = qm2_params%multip_2c_elec_params(3,i) !AQ for H
+          else
+            dd1_temp = (HSP_am1dhfr(iqm_atomic) &
+                      /(AU_TO_EV*qm2_params%multip_2c_elec_params(1,i)**2))**(1.D0/3.D0)
+            dd2_temp = dd1_temp + 0.04d0
+            do j = 1, 5
+              dd_diff = dd2_temp - dd1_temp
+              hsp1_temp = 0.5D0*dd1_temp &
+                        - 0.5D0/sqrt(4.D0*qm2_params%multip_2c_elec_params(1,i)**2+1.0d0/dd1_temp**2)
+              hsp2_temp = 0.5D0*dd2_temp &
+                        - 0.5D0/sqrt(4.D0*qm2_params%multip_2c_elec_params(1,i)**2+1.0d0/dd2_temp**2)
+              if (abs(hsp2_temp - hsp1_temp) < 1.0d-25) exit
+              dd3_temp = dd1_temp + dd_diff*(HSP_am1dhfr(iqm_atomic)/AU_TO_EV-hsp1_temp) &
+                       / (hsp2_temp - hsp1_temp)
+              dd1_temp = dd2_temp
+              dd2_temp = dd3_temp
+            end do
+            qm2_params%multip_2c_elec_params(4,i) = 0.5d0/dd2_temp
+            !end AD
+            !AQ
+            hpp = 0.5D0*(gpp_am1dhfr(iqm_atomic)-gp2_am1dhfr(iqm_atomic)) 
+            hpp = max(0.1d0,hpp) !I have no idea where this max comes from but it is required to
+                                 !match mopac results for Chlorine and potentially other elements.
+            dd1_temp = (16.0d0*hpp &
+                       /(AU_TO_EV*48.0d0*qm2_params%multip_2c_elec_params(2,i)**4))**(1.0d0/5.0d0)
+            dd2_temp = dd1_temp + 0.04d0
+            do j = 1, 5
+              dd_diff = dd2_temp - dd1_temp
+              hsp1_temp = 0.25d0*dd1_temp - 0.5d0/sqrt(4.0d0*qm2_params%multip_2c_elec_params(2,i)**2 &
+                          + 1.0d0/dd1_temp**2) + 0.25d0/sqrt(8.0d0*qm2_params%multip_2c_elec_params(2,i)**2 &
+                          + 1.0d0/dd1_temp**2)
+              hsp2_temp = 0.25d0*dd2_temp - 0.5d0/sqrt(4.0d0*qm2_params%multip_2c_elec_params(2,i)**2 &
+                          + 1.0d0/dd2_temp**2) + 0.25d0/sqrt(8.0d0*qm2_params%multip_2c_elec_params(2,i)**2 &
+                         + 1.0d0/dd2_temp**2)
+              if (abs(hsp2_temp - hsp1_temp) < 1.0d-25) exit
+              dd3_temp = dd1_temp + dd_diff*(hpp/AU_TO_EV-hsp1_temp) &
+                       / (hsp2_temp - hsp1_temp)
+              dd1_temp = dd2_temp
+              dd2_temp = dd3_temp
+            end do
+            qm2_params%multip_2c_elec_params(5,i) = 0.5d0/dd2_temp
+            !end AQ
+          end if
+
+          !----------------------------------------
+          ! End calculation of derived parameters.
+          !----------------------------------------
+
+! Next do the electronic energy - add it to the total heat of formation energy.
+          qm2_params%tot_heat_form = qm2_params%tot_heat_form-(elec_eng*EV_TO_KCAL)
+          qm2_params%onec2elec_params(1,i) = 0.5D0*GSS_am1dhfr(iqm_atomic)
+          qm2_params%onec2elec_params(2,i) = GSP_am1dhfr(iqm_atomic)
+          qm2_params%onec2elec_params(3,i) = 0.5d0*GPP_am1dhfr(iqm_atomic)
+          qm2_params%onec2elec_params(4,i) = 1.25d0*GP2_am1dhfr(iqm_atomic)
+          qm2_params%onec2elec_params(5,i) = 0.5d0*HSP_am1dhfr(iqm_atomic)
+          qm2_params%cc_exp_params(i) = alp_am1dhfr(iqm_atomic)
+          qm2_params%orb_elec_ke(1,i) = uss_am1dhfr(iqm_atomic)
+          qm2_params%orb_elec_ke(2,i) = upp_am1dhfr(iqm_atomic)
+        end do
+
+        ! Precompute some parameters to save time later
+        ! RCW: By rebasing the atomic numbers of each atoms as types we reduce the overall
+        ! size of the arrays. While this does not save us much memory it greatly increases
+        ! the chance of cache hits.
+        do i=1,qmmm_struct%qm_ntypes
+           ! get the Slater orbital expansion coefficients
+           qm2_params%s_orb_exp_by_type(i) = s_orb_exp_am1dhfr(qmmm_struct%qm_type_id(i))
+           qm2_params%p_orb_exp_by_type(i) = p_orb_exp_am1dhfr(qmmm_struct%qm_type_id(i))        
+          qm2_params%NUM_FN(i) = NUM_FN_am1dhfr(qmmm_struct%qm_type_id(i))
+          do j=1,4
+             qm2_params%FN1(j,i) = FN1_am1dhfr(j,qmmm_struct%qm_type_id(i))
+             qm2_params%FN2(j,i) = FN2_am1dhfr(j,qmmm_struct%qm_type_id(i))
+             qm2_params%FN3(j,i) = FN3_am1dhfr(j,qmmm_struct%qm_type_id(i))
+          end do
+        end do
+
+        do i=1,qmmm_struct%qm_ntypes
+          do j = 1,qmmm_struct%qm_ntypes
+            qm2_params%betasas(i,j) = betas_am1dhfr(qmmm_struct%qm_type_id(i))+betas_am1dhfr(qmmm_struct%qm_type_id(j))
+            qm2_params%betasap(i,j) = betas_am1dhfr(qmmm_struct%qm_type_id(i))+betap_am1dhfr(qmmm_struct%qm_type_id(j))
+            qm2_params%betapap(i,j) = betap_am1dhfr(qmmm_struct%qm_type_id(i))+betap_am1dhfr(qmmm_struct%qm_type_id(j))
+          end do
+        end do
+
+!--------------------------------------
+!        end  AM1/DHFR PARAMS         *
+!--------------------------------------
+        
+!--------------------------------------
 !           AM1D PARAMS               *
 !--------------------------------------
       else if (qmmm_nml%qmtheory%AM1D) then

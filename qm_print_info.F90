@@ -695,7 +695,10 @@ subroutine qm_print_ref(amber_papers, ref_index, atomic_number, qmtheory)
                         elementSymbol(atomic_number) 
         else if (ref_index == 104) then  ! Magnesum AM1d
           write(6,'("| QMMM: ",A2,": P. Imhof et al, J. Chem.  Theo.  Comp., 2, 1050-1056 (2006)")') &
-                        elementSymbol(atomic_number)                        
+                        elementSymbol(atomic_number)
+        else if (ref_index == 105) then  ! AM1/DHFR
+          write(6,'("| QMMM: ",A2,": Doron et al. J. Chem. Theory Comput., 7, 3420–3437 (2011)")') &
+                        elementSymbol(atomic_number)
         else
           !UNKNOWN REFERENCE
           write(6,'(''| QMMM: '',A2,'': REFERENCE UNKNOWN.'')') elementSymbol(atomic_number)

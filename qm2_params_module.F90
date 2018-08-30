@@ -319,7 +319,7 @@ contains
        REQUIRE(ier == 0)
     end if
             
-    if (qmtheory%AM1 .OR. qmtheory%AM1D .or.  &
+    if (qmtheory%AM1 .OR. qmtheory%AM1DHFR .OR. qmtheory%AM1D .or.  &
          qmtheory%PM3 .OR. qmtheory%PDDGPM3 .OR. &
          qmtheory%PM3CARB1 .OR. qmtheory%RM1 .OR. qmtheory%PDDGPM3_08 .OR. &
          qmtheory%PM6 .OR. qmtheory%PM3ZNB .OR. qmtheory%PM3MAIS) then
@@ -444,7 +444,7 @@ contains
        deallocate (self%atom_orb_zz_sxs_over_sas, stat = ier)
        REQUIRE(ier == 0)
 
-       if (qmtheory%AM1 .OR. qmtheory%PM3 .OR. qmtheory%PDDGPM3 .OR. &
+       if (qmtheory%AM1 .OR. qmtheory%AM1DHFR .OR. qmtheory%PM3 .OR. qmtheory%PDDGPM3 .OR. &
             qmtheory%PM3CARB1 .OR. qmtheory%RM1 .OR. qmtheory%PDDGPM3_08 .OR. &
             qmtheory%PM6 .OR. qmtheory%PM3ZNB .OR. qmtheory%PM3MAIS) then
           deallocate (self%NUM_FN, stat = ier)

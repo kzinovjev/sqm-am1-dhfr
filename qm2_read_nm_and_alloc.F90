@@ -1259,6 +1259,7 @@ subroutine read_qmmm_nm_and_alloc( igb, ih, ix, x, cut, use_pme, ntb, qmstep, &
    qmmm_nml%qmgb = qmgb
 
    qmmm_struct%AM1_OR_PM3 = (qmmm_nml%qmtheory%AM1 .or. qmmm_nml%qmtheory%AM1D .or. qmmm_nml%qmtheory%PM3 &
+                             .or. qmmm_nml%qmtheory%AM1DHFR &
                              .OR. qmmm_nml%qmtheory%PDDGPM3 .OR. qmmm_nml%qmtheory%PM3CARB1 .OR. &
                              qmmm_nml%qmtheory%RM1 .OR. qmmm_nml%qmtheory%PDDGPM3_08 .OR. qmmm_nml%qmtheory%PM3ZNB)
    qmmm_struct%PDDG_IN_USE = (qmmm_nml%qmtheory%PDDGPM3 .OR. qmmm_nml%qmtheory%PDDGMNDO  &

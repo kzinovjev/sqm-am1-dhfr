@@ -21,9 +21,11 @@ module QM2_parameters
   _REAL_, dimension(1:NumberElements) :: heat_of_form
   _REAL_, dimension(1:NumberElements) :: elec_eng_pddgpm3,elec_eng_pddgpm3_08, elec_eng_pddgmndo
   _REAL_, dimension(1:NumberElements) :: s_orb_exp_mndo, s_orb_exp_am1, s_orb_exp_pm3, s_orb_exp_pddgpm3, &
+                                    s_orb_exp_am1dhfr, &
                                     s_orb_exp_pddgpm3_08, s_orb_exp_pddgmndo, s_orb_exp_rm1, &
                                     s_orb_exp_pm6, s_orb_exp_mndod, s_orb_exp_am1d
   _REAL_, dimension(1:NumberElements) :: p_orb_exp_mndo, p_orb_exp_am1, p_orb_exp_pm3, p_orb_exp_pddgpm3, &
+                                    p_orb_exp_am1dhfr, &
                                     p_orb_exp_pddgpm3_08, p_orb_exp_pddgmndo, p_orb_exp_rm1, &
                                     p_orb_exp_pm6, p_orb_exp_mndod, p_orb_exp_am1d
   _REAL_, dimension(1:NumberElements) :: d_orb_exp_mndod, d_orb_exp_am1d, d_orb_exp_pm6 
@@ -31,13 +33,16 @@ module QM2_parameters
   _REAL_, dimension(1:NumberElements) :: s_orb_exp_tail_am1d, p_orb_exp_tail_am1d, d_orb_exp_tail_am1d
   _REAL_, dimension(1:NumberElements) :: s_orb_exp_tail_pm6, p_orb_exp_tail_pm6, d_orb_exp_tail_pm6
   _REAL_, dimension(1:NumberElements) :: betas_mndo, betas_am1, betas_pm3, betas_pddgpm3, betas_pddgpm3_08, &
+                                    betas_am1dhfr, &
                                     betas_pddgmndo, betas_pm3carb1, betas_rm1, betas_pm6, betas_mndod, betas_am1d 
   _REAL_, dimension(1:NumberElements) :: betap_mndo, betap_am1, betap_pm3, betap_pddgpm3, betap_pddgpm3_08, &
+                                    betap_am1dhfr, &
                                     betap_pddgmndo, betap_pm3carb1, betap_rm1, betap_pm6, betap_mndod, betap_am1d
   _REAL_, dimension(1:NumberElements) ::betad_mndod, betad_am1d, betad_pm6  
   _REAL_, dimension(1:NumberElements) ::GNN_am1d
   _REAL_, dimension(1:NumberElements) :: rho_core_am1d, rho_core_mndod, rho_core_pm6
   _REAL_, dimension(1:4,NumberElements) :: FN1_am1, FN2_am1, FN3_am1
+  _REAL_, dimension(1:4,NumberElements) :: FN1_am1dhfr, FN2_am1dhfr, FN3_am1dhfr  
   _REAL_, dimension(1:4,NumberElements) :: FN1_am1d, FN2_am1d, FN3_am1d  
   _REAL_, dimension(1:4,NumberElements) :: FN1_rm1, FN2_rm1, FN3_rm1
   _REAL_, dimension(1:4,NumberElements) :: FN1_pm3, FN2_pm3, FN3_pm3
@@ -47,6 +52,7 @@ module QM2_parameters
   _REAL_, dimension(1:NumberElements) :: GSS_mndo, GSP_mndo, GPP_mndo, GP2_mndo, HSP_mndo
   _REAL_, dimension(1:NumberElements) :: GSS_mndod, GSP_mndod, GPP_mndod, GDD_mndod, GP2_mndod, HSP_mndod 
   _REAL_, dimension(1:NumberElements) :: GSS_am1, GSP_am1, GPP_am1, GP2_am1, HSP_am1
+  _REAL_, dimension(1:NumberElements) :: GSS_am1dhfr, GSP_am1dhfr, GPP_am1dhfr, GP2_am1dhfr, HSP_am1dhfr  
   _REAL_, dimension(1:NumberElements) :: GSS_am1d, GSP_am1d, GPP_am1d, GDD_am1d, GP2_am1d, HSP_am1d  
   _REAL_, dimension(1:NumberElements) :: GSS_rm1, GSP_rm1, GPP_rm1, GP2_rm1, HSP_rm1
   _REAL_, dimension(1:NumberElements) :: GSS_pm3, GSP_pm3, GPP_pm3, GP2_pm3, HSP_pm3
@@ -55,6 +61,7 @@ module QM2_parameters
   _REAL_, dimension(1:NumberElements) :: GSS_pddgpm3_08, GSP_pddgpm3_08, GPP_pddgpm3_08, GP2_pddgpm3_08, HSP_pddgpm3_08
   _REAL_, dimension(1:NumberElements) :: GSS_pddgmndo, GSP_pddgmndo, GPP_pddgmndo, GP2_pddgmndo, HSP_pddgmndo
   _REAL_, dimension(1:NumberElements) :: alp_mndo, alp_am1, alp_pm3, alp_pddgpm3, alp_pddgpm3_08, &
+                                    alp_am1dhfr, &
                                     alp_pddgmndo, alp_pm3carb1, alp_rm1, alp_pm6, alp_mndod, alp_am1d
 ! Note: alp_pm6 for PM6 does not contain PM6 parameters but PM3 parameters. For elements which are not parametrized
 !       for PM3, the parameters have been guessed by Andreas Goetz (AWG). These parameters are only used for QM/MM
@@ -69,8 +76,10 @@ module QM2_parameters
   _REAL_, dimension(NumberElements,NumberElements,1:3) :: gamab_pm3mais
 
   _REAL_, dimension(1:NumberElements) :: USS_mndo, USS_mndod, USS_am1, USS_am1d, USS_pm3, USS_pddgpm3, USS_pddgpm3_08, &
+                                    USS_am1dhfr, &
                                     USS_pddgmndo, USS_pm3carb1, USS_rm1, USS_pm6
   _REAL_, dimension(1:NumberElements) :: UPP_mndo, UPP_mndod, UPP_am1, UPP_am1d, UPP_pm3, UPP_pddgpm3, UPP_pddgpm3_08, &
+                                    UPP_am1dhfr, &
                                     UPP_pddgmndo, UPP_pm3carb1, UPP_rm1, UPP_pm6
   _REAL_, dimension(1:NumberElements) :: UDD_mndod, UDD_am1d, UDD_pm6                                    
   _REAL_, dimension(1:NumberElements) :: PDDGC1_pm3, PDDGC2_pm3, PDDGE1_pm3, PDDGE2_pm3
@@ -93,10 +102,12 @@ module QM2_parameters
   integer, dimension(1:NumberElements) :: mndo_ref_index, mndod_ref_index, am1_ref_index, am1d_ref_index, pm3_ref_index, &
                                      pm3carb1_ref_index, rm1_ref_index, pm6_ref_index, pm3znb_ref_index
   integer, dimension(1:NumberElements) :: pddgpm3_ref_index, pddgpm3_08_ref_index, pddgmndo_ref_index
+  integer, dimension(1:NumberElements) :: am1dhfr_ref_index
                                      !Index for printing parameter origin in qm_print_ref()
   integer, dimension(1:NumberElements) :: core_chg, ios, iop, nsshell
   integer, dimension(1:NumberElements) :: natomic_orbs
   integer, dimension(1:NumberElements) :: NUM_FN_am1, NUM_FN_am1d, NUM_FN_pm3, NUM_FN_pddgpm3, &
+                                     NUM_FN_am1dhfr, &
                                      NUM_FN_pddgpm3_08, NUM_FN_rm1, NUM_FN_pm6
                                      !Number of FN arrays that are not zero
                                      
@@ -106,6 +117,7 @@ module QM2_parameters
 
   logical, dimension(1:NumberElements) :: element_supported_mndo, element_supported_mndod,  &
                                  element_supported_am1, element_supported_am1d,  &
+                                 element_supported_am1dhfr, &
                                  element_supported_pm3, element_supported_pddgpm3, &
                                  element_supported_pddgpm3_08, element_supported_pddgmndo, &
                                  element_supported_rm1, element_supported_pm6, &
@@ -430,6 +442,7 @@ end if
   element_supported_mndo  = .false.
   element_supported_mndod  = .false.
   element_supported_am1  = .false.
+  element_supported_am1dhfr  = .false.
   element_supported_am1d  = .false.  
   element_supported_rm1  = .false.
   element_supported_pm3  = .false.
@@ -462,6 +475,7 @@ end if
   s_orb_exp_mndo  = 0.0d0
   s_orb_exp_mndod  = 0.0d0
   s_orb_exp_am1  = 0.0d0
+  s_orb_exp_am1dhfr  = 0.0d0
   s_orb_exp_am1d  = 0.0d0  
   s_orb_exp_rm1  = 0.0d0
   s_orb_exp_pm3  = 0.0d0
@@ -472,6 +486,7 @@ end if
   p_orb_exp_mndo  = 0.0d0
   p_orb_exp_mndod  = 0.0d0
   p_orb_exp_am1  = 0.0d0
+  p_orb_exp_am1dhfr  = 0.0d0
   p_orb_exp_am1d  = 0.0d0  
   p_orb_exp_rm1  = 0.0d0
   p_orb_exp_pm3  = 0.0d0
@@ -494,6 +509,7 @@ end if
   betas_mndo  = 0.0d0
   betas_mndod  = 0.0d0
   betas_am1  = 0.0d0
+  betas_am1dhfr  = 0.0d0
   betas_am1d  = 0.0d0  
   betas_rm1  = 0.0d0
   betas_pm3  = 0.0d0
@@ -505,6 +521,7 @@ end if
   betap_mndo  = 0.0d0
   betap_mndod  = 0.0d0
   betap_am1  = 0.0d0
+  betap_am1dhfr  = 0.0d0
   betap_am1d  = 0.0d0  
   betap_rm1  = 0.0d0
   betap_pm3  = 0.0d0
@@ -523,7 +540,11 @@ end if
   FN1_am1 = 0.0d0
   FN2_am1 = 0.0d0
   FN3_am1 = 0.0d0
+  FN1_am1dhfr = 0.0d0
+  FN2_am1dhfr = 0.0d0
+  FN3_am1dhfr = 0.0d0
   NUM_FN_am1 = 0
+  NUM_FN_am1dhfr = 0
   FN1_am1d = 0.0d0
   FN2_am1d = 0.0d0
   FN3_am1d = 0.0d0
@@ -551,6 +572,7 @@ end if
   GSS_mndo = 0.0d0; GSP_mndo = 0.0d0; GPP_mndo = 0.0d0; GP2_mndo = 0.0d0; HSP_mndo = 0.0d0
   GSS_mndod = 0.0d0; GSP_mndod = 0.0d0; GPP_mndod = 0.0d0; GDD_mndod = 0.0d0; GP2_mndod = 0.0d0; HSP_mndod = 0.0d0
   GSS_am1 = 0.0d0; GSP_am1 = 0.0d0; GPP_am1 = 0.0d0; GP2_am1 = 0.0d0; HSP_am1 = 0.0d0
+  GSS_am1dhfr = 0.0d0; GSP_am1dhfr = 0.0d0; GPP_am1dhfr = 0.0d0; GP2_am1dhfr = 0.0d0; HSP_am1dhfr = 0.0d0
   GSS_am1d = 0.0d0; GSP_am1d = 0.0d0; GPP_am1d = 0.0d0; GDD_am1d = 0.0d0; GP2_am1d = 0.0d0; HSP_am1d = 0.0d0  
   GSS_rm1 = 0.0d0; GSP_rm1 = 0.0d0; GPP_rm1 = 0.0d0; GP2_rm1 = 0.0d0; HSP_rm1 = 0.0d0
   GSS_pm3 = 0.0d0; GSP_pm3 = 0.0d0; GPP_pm3 = 0.0d0; GP2_pm3 = 0.0d0; HSP_pm3 = 0.0d0
@@ -559,11 +581,14 @@ end if
   GSS_pddgpm3 = 0.0d0; GSP_pddgpm3 = 0.0d0; GPP_pddgpm3 = 0.0d0; GP2_pddgpm3 = 0.0d0; HSP_pddgpm3 = 0.0d0
   GSS_pddgpm3_08 = 0.0d0; GSP_pddgpm3_08 = 0.0d0; GPP_pddgpm3_08 = 0.0d0; GP2_pddgpm3_08 = 0.0d0; HSP_pddgpm3_08 = 0.0d0
   alp_mndo = 0.0d0; alp_mndod = 0.0d0; alp_am1=0.0d0; alp_am1d=0.0d0; alp_rm1=0.0d0; alp_pm3 = 0.0d0; alp_pddgmndo = 0.0d0
+  alp_am1dhfr=0.0d0
   alp_pddgpm3 = 0.0d0; alp_pddgpm3_08 = 0.0d0; alp_pm3carb1 = 0.0d0; alp_pm6 = 0.0d0
-  uss_mndo = 0.0d0; uss_mndod = 0.0d0; uss_am1=0.0d0; uss_am1d=0.0d0     
+  uss_mndo = 0.0d0; uss_mndod = 0.0d0; uss_am1=0.0d0; uss_am1d=0.0d0  
+  uss_am1dhfr=0.0d0
   uss_rm1=0.0d0; uss_pm3=0.0d0; uss_pm6=0.0d0; uss_pddgmndo = 0.0d0
   uss_pddgpm3 = 0.0d0; uss_pddgpm3_08 = 0.0d0; uss_pm3carb1 = 0.0d0
-  upp_mndo = 0.0d0; upp_mndod = 0.0d0; upp_am1=0.0d0; upp_am1d=0.0d0   
+  upp_mndo = 0.0d0; upp_mndod = 0.0d0; upp_am1=0.0d0; upp_am1d=0.0d0  
+  upp_am1dhfr=0.0d0
   upp_rm1=0.0d0; upp_pm3=0.0d0; upp_pm6=0.0d0; upp_pddgmndo = 0.0d0
   upp_pddgpm3 = 0.0d0; upp_pddgpm3_08 = 0.0d0; upp_pm3carb1 = 0.0d0
   udd_mndod = 0.0d0; udd_am1d = 0.0d0; udd_pm6 = 0.0d0
@@ -578,6 +603,7 @@ end if
   EISOL_pm6 = 0.0d0
 
   mndo_ref_index = 0; mndod_ref_index = 0; am1_ref_index = 0; am1d_ref_index = 0 
+  am1dhfr_ref_index = 0
   rm1_ref_index = 0; pm3_ref_index = 0; pm6_ref_index = 0
   pm3carb1_ref_index = 0
   pddgpm3_ref_index = 0; pddgpm3_08_ref_index = 0; pddgmndo_ref_index = 0
@@ -679,6 +705,32 @@ end if
      alp_am1(atomic_number) = 2.8823240D0
      USS_am1(atomic_number) = -11.3964270D0
      UPP_am1(atomic_number) = 0.0d0
+  
+  !AM1/DHFR
+   ! Reference: Doron et al. J. Chem. Theory Comput. 2011, 7, 3420–3437
+     am1dhfr_ref_index(atomic_number) = 105
+     element_supported_am1dhfr(atomic_number) = .true.
+     s_orb_exp_am1dhfr(atomic_number) = 1.17345275D0
+     p_orb_exp_am1dhfr(atomic_number) = 0.0d0
+     betas_am1dhfr(atomic_number) = -5.64837035D0
+     betap_am1dhfr(atomic_number) = 0.0d0
+     FN1_am1dhfr(1,atomic_number) = 0.13056000D0
+     FN2_am1dhfr(1,atomic_number) = 4.80257197D0
+     FN3_am1dhfr(1,atomic_number) = 1.21380391D0
+     FN1_am1dhfr(2,atomic_number) = 0.00888975D0
+     FN2_am1dhfr(2,atomic_number) = 14.28487074D0
+     FN3_am1dhfr(2,atomic_number) = 1.75118838D0
+     FN1_am1dhfr(3,atomic_number) =-0.03032460D0
+     FN2_am1dhfr(3,atomic_number) = 1.60610364D0
+     FN3_am1dhfr(3,atomic_number) = 2.01192128D0
+     FN1_am1dhfr(4,atomic_number) = 0.0d0
+     FN2_am1dhfr(4,atomic_number) = 0.0d0
+     FN3_am1dhfr(4,atomic_number) = 0.0d0
+     NUM_FN_am1dhfr(atomic_number) = 3
+     GSS_am1dhfr(atomic_number) = 12.60364621D0
+     alp_am1dhfr(atomic_number) = 3.40130304D0
+     USS_am1dhfr(atomic_number) = -11.43733166D0
+     UPP_am1dhfr(atomic_number) = 0.0d0  
 
   !AM1D
    ! Reference: K. Nam, Q. Cui, J. Gao, D. York. J. CHEM. THEO. COMP., 3, 486, (2007) (102) AM1/d-PhoT
@@ -1269,6 +1321,35 @@ end if
      alp_am1(atomic_number) = 2.6482740D0
      USS_am1(atomic_number) = -52.0286580D0
      UPP_am1(atomic_number) = -39.6142390D0
+  !AM1/DHFR
+   ! Reference: Doron et al. J. Chem. Theory Comput. 2011, 7, 3420–3437
+     am1dhfr_ref_index(atomic_number) = 105
+     element_supported_am1dhfr(atomic_number) = .true.
+     s_orb_exp_am1dhfr(atomic_number) = 2.02999558D0
+     p_orb_exp_am1dhfr(atomic_number) = 1.61950090D0
+     betas_am1dhfr(atomic_number) = -15.85249007D0
+     betap_am1dhfr(atomic_number) = -7.41730443D0
+     FN1_am1dhfr(1,atomic_number) = 0.03207184D0
+     FN2_am1dhfr(1,atomic_number) = 4.61337571D0
+     FN3_am1dhfr(1,atomic_number) = 1.70743023D0
+     FN1_am1dhfr(2,atomic_number) = 0.02309988D0
+     FN2_am1dhfr(2,atomic_number) = 5.87793752D0
+     FN3_am1dhfr(2,atomic_number) = 1.83819070D0
+     FN1_am1dhfr(3,atomic_number) =-0.01421778D0
+     FN2_am1dhfr(3,atomic_number) = 3.84436254D0
+     FN3_am1dhfr(3,atomic_number) = 1.95422526D0
+     FN1_am1dhfr(4,atomic_number) =-0.00219237D0
+     FN2_am1dhfr(4,atomic_number) = 1.03264951D0
+     FN3_am1dhfr(4,atomic_number) = 2.75960465D0
+     NUM_FN_am1dhfr(atomic_number) = 4
+     GSS_am1dhfr(atomic_number) = 12.05774032D0
+     GSP_am1dhfr(atomic_number) = 11.71252941D0
+     GPP_am1dhfr(atomic_number) = 11.13199843D0
+     GP2_am1dhfr(atomic_number) = 9.86125443D0
+     HSP_am1dhfr(atomic_number) = 2.40118582D0
+     alp_am1dhfr(atomic_number) = 2.70195063D0
+     USS_am1dhfr(atomic_number) = -52.12801676D0
+     UPP_am1dhfr(atomic_number) = -38.86576821D0  
   !AM1D
    ! Reference:  M.J.S. DEWAR ET AL, J. AM. CHEM. SOC. 107 3902-3909 (1985) (index = 17)
      am1d_ref_index(atomic_number) = 17
@@ -1564,6 +1645,36 @@ end if
      alp_am1(atomic_number) = 2.9472860D0
      USS_am1(atomic_number) = -71.8600000D0
      UPP_am1(atomic_number) = -57.1675810D0
+
+  !AM1/DHFR
+   ! Reference: Doron et al. J. Chem. Theory Comput. 2011, 7, 3420–3437
+     am1dhfr_ref_index(atomic_number) = 105
+     element_supported_am1dhfr(atomic_number) = .true.
+     s_orb_exp_am1dhfr(atomic_number) = 2.36751669D0
+     p_orb_exp_am1dhfr(atomic_number) = 2.14340234D0
+     betas_am1dhfr(atomic_number) = -20.15951726D0
+     betap_am1dhfr(atomic_number) = -18.30236349D0
+     FN1_am1dhfr(1,atomic_number) = 0.02577954D0
+     FN2_am1dhfr(1,atomic_number) = 4.93484582D0
+     FN3_am1dhfr(1,atomic_number) = 1.50396975D0
+     FN1_am1dhfr(2,atomic_number) = 0.02888160D0
+     FN2_am1dhfr(2,atomic_number) = 5.03773737D0
+     FN3_am1dhfr(2,atomic_number) = 2.10230179D0
+     FN1_am1dhfr(3,atomic_number) =-0.00608690D0
+     FN2_am1dhfr(3,atomic_number) = 1.57427110D0
+     FN3_am1dhfr(3,atomic_number) = 2.43317594D0
+     FN1_am1dhfr(4,atomic_number) = 0.0000000D0
+     FN2_am1dhfr(4,atomic_number) = 0.0000000D0
+     FN3_am1dhfr(4,atomic_number) = 0.0000000D0
+     NUM_FN_am1dhfr(atomic_number) = 3
+     GSS_am1dhfr(atomic_number) = 13.54840912D0
+     GSP_am1dhfr(atomic_number) = 12.54471362D0
+     GPP_am1dhfr(atomic_number) = 13.04037236D0
+     GP2_am1dhfr(atomic_number) = 11.66657487D0
+     HSP_am1dhfr(atomic_number) = 3.15191830D0
+     alp_am1dhfr(atomic_number) = 2.86730265D0
+     USS_am1dhfr(atomic_number) = -72.01619964D0
+     UPP_am1dhfr(atomic_number) = -57.55693452D0
 
   !AM1D
    ! Reference:  M.J.S. DEWAR ET AL, J. AM. CHEM. SOC. 107 3902-3909 (1985) (index = 17)
@@ -1861,6 +1972,36 @@ end if
      alp_am1(atomic_number) = 4.4553710D0
      USS_am1(atomic_number) = -97.8300000D0
      UPP_am1(atomic_number) = -78.2623800D0
+
+  !AM1/DHFR
+   ! Reference: Doron et al. J. Chem. Theory Comput. 2011, 7, 3420–3437
+     am1dhfr_ref_index(atomic_number) = 105
+     element_supported_am1dhfr(atomic_number) = .true.
+     s_orb_exp_am1dhfr(atomic_number) = 3.01595571D0
+     p_orb_exp_am1dhfr(atomic_number) = 2.38139341D0
+     betas_am1dhfr(atomic_number) = -29.27065291D0
+     betap_am1dhfr(atomic_number) = -29.28300296D0
+     FN1_am1dhfr(1,atomic_number) = 0.28091667D0
+     FN2_am1dhfr(1,atomic_number) = 5.00000144D0
+     FN3_am1dhfr(1,atomic_number) = 0.84783749D0
+     FN1_am1dhfr(2,atomic_number) = 0.08133050D0
+     FN2_am1dhfr(2,atomic_number) = 7.00009001D0
+     FN3_am1dhfr(2,atomic_number) = 1.44514698D0
+     FN1_am1dhfr(3,atomic_number) = 0.0000000D0
+     FN2_am1dhfr(3,atomic_number) = 0.0000000D0
+     FN3_am1dhfr(3,atomic_number) = 0.0000000D0
+     FN1_am1dhfr(4,atomic_number) = 0.0000000D0
+     FN2_am1dhfr(4,atomic_number) = 0.0000000D0
+     FN3_am1dhfr(4,atomic_number) = 0.0000000D0
+     NUM_FN_am1dhfr(atomic_number) = 2
+     GSS_am1dhfr(atomic_number) = 15.41584115D0
+     GSP_am1dhfr(atomic_number) = 14.48088177D0
+     GPP_am1dhfr(atomic_number) = 14.51015532D0
+     GP2_am1dhfr(atomic_number) = 12.98948394D0
+     HSP_am1dhfr(atomic_number) = 3.80637580D0
+     alp_am1dhfr(atomic_number) = 4.51366550D0
+     USS_am1dhfr(atomic_number) = -97.82978333D0
+     UPP_am1dhfr(atomic_number) = -78.26194049D0
 
   !AM1D
    ! Reference: K. Nam, Q. Cui, J. Gao, D. York. J. CHEM. THEO. COMP., 3, 486, (2007) (102) AM1/d-PhoT

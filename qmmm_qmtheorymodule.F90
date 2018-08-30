@@ -20,6 +20,7 @@ module qmmm_qmtheorymodule
   type qmTheoryType
      logical PM3
      logical AM1
+     logical AM1DHFR
      logical AM1D           ! This is AM1/d (with d orbitals), *NOT* AM1-D (with dispersion correction)
      logical MNDO           
      logical MNDOD          ! This is MNDO/d
@@ -86,6 +87,7 @@ contains
     
     self%PM3        = .false. 
     self%AM1        = .false.
+    self%AM1DHFR    = .false.
     self%AM1D       = .false.
     self%MNDO       = .false.
     self%MNDOD      = .false.
@@ -110,6 +112,8 @@ contains
        self%PM3 = .true.
     case ('AM1')
        self%AM1 = .true.
+    case ('AM1DHFR', 'AM1-DHFR', 'AM1_DHFR', 'AM1/DHFR')
+        self%AM1DHFR = .true.
     case ('AM1_D*', 'AM1-D*')
        self%AM1 = .true.
        self%dispersion = .true.
@@ -183,6 +187,8 @@ contains
        qmTheoryString = 'PM3'
     else if (self%AM1) then
        qmTheoryString = 'AM1'
+    else if (self%AM1DHFR) then
+        qmTheoryString = 'AM1/DHFR'
     else if (self%AM1D) then
        qmTheoryString = 'AM1/D'
     else if (self%MNDO) then
