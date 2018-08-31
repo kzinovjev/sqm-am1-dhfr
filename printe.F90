@@ -322,6 +322,8 @@ subroutine printe( nstep, gradient_rms, gradient_max, ene, &
         write(6,9092) escf
      else if (qmmm_nml%qmtheory%PM3MAIS) then
         write(6,9093) escf
+     else if (qmmm_nml%qmtheory%AM1DHFR) then
+        write(6,9094) escf
      else
         write(6,'(" ERROR - UNKNOWN QM THEORY")')
      end if
@@ -413,7 +415,7 @@ subroutine printe( nstep, gradient_rms, gradient_max, ene, &
         else if (qmmm_nml%qmtheory%MNDO) then
            write(7,9082) escf
         else if (qmmm_nml%qmtheory%MNDOD) then
-           write(7,9982) escf           
+           write(7,9982) escf
         else if (qmmm_nml%qmtheory%PDDGPM3) then
            write(7,9083) escf
         else if (qmmm_nml%qmtheory%PDDGMNDO) then
@@ -434,6 +436,8 @@ subroutine printe( nstep, gradient_rms, gradient_max, ene, &
            write(7,9092) escf
         else if (qmmm_nml%qmtheory%PM3MAIS) then
            write(7,9093) escf
+        else if (qmmm_nml%qmtheory%AM1DHFR) then
+           write(7,9094) escf
         else
            write(7,'(" ERROR - UNKNOWN QM THEORY")')
         end if
@@ -518,6 +522,7 @@ subroutine printe( nstep, gradient_rms, gradient_max, ene, &
    9091 format (1x,'PM3ZNBESCF =',f14.4)
    9092 format (1x,'EXTERNESCF =',f14.4)
    9093 format (1x,'PM3MAISESCF =',f14.4)
+   9094 format (1x,'AM1DHFRESCF =',f14.4)
    9099 format (1x,'ECRG    =',f14.4)
    9096 format (1x,'PM3MMX2ESCF =',f14.4)
    9190 format(1x,'Dipole convergence: rms = ',e10.3,' iters = ',f6.2)

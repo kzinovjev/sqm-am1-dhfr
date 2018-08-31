@@ -555,6 +555,8 @@ subroutine prntmd(nstep, time, ener, onefac, iout7, rms)
       write(6,9092) escf
     else if (qmmm_nml%qmtheory%PM3MAIS) then
       write(6,9093) escf
+    else if (qmmm_nml%qmtheory%AM1DHFR) then
+      write(7,9094) escf
     else
       write(6,'(" ERROR - UNKNOWN QM THEORY")')
     end if
@@ -830,6 +832,8 @@ subroutine prntmd(nstep, time, ener, onefac, iout7, rms)
       write(7, 9092) escf
     else if (qmmm_nml%qmtheory%PM3MAIS) then
       write(7, 9093) escf
+    else if (qmmm_nml%qmtheory%AM1DHFR) then
+      write(7,9094) escf
     else
       write(7,'(" ERROR - UNKNOWN QM THEORY")')
     end if
@@ -1014,6 +1018,7 @@ subroutine prntmd(nstep, time, ener, onefac, iout7, rms)
   9091 format (1x,'PM3ZNBESCF= ',f14.4)
   9092 format (1x,'EXTERNESCF= ',f14.4)
   9093 format (1x,'PM3MAISESCF= ',f14.4)
+  9094 format (1x,'AM1DHFRESCF =',f14.4)
   9096 format (1x,'PM3MMX2ESCF= ',f14.4)
 #ifdef APBS
   9097 format (1x,'ENPOLAR= ',f14.4)
@@ -1196,6 +1201,8 @@ subroutine pimd_report(nstep, time, ounit, ener, onefac)
       write(ounit, 9092) escf
     else if (qmmm_nml%qmtheory%PM3MAIS) then
       write(ounit, 9093) escf
+    else if (qmmm_nml%qmtheory%AM1DHFR) then
+      write(7,9094) escf
     else
       write(7,'(" ERROR - UNKNOWN QM THEORY")')
     end if
@@ -1256,6 +1263,7 @@ subroutine pimd_report(nstep, time, ounit, ener, onefac)
   9091 format (1x,'PM3ZNBESCF= ',f14.4)
   9092 format (1x,'EXTERNESCF= ',f14.4)
   9093 format (1x,'PM3MAISESCF= ',f14.4)
+  9094 format (1x,'AM1DHFRESCF =',f14.4)
   9100 format (1x,'DV/DL  = ',f14.4)
   9200 format (1x,'ESEBOMD =',f14.4)
 end subroutine pimd_report
