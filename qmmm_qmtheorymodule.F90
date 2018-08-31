@@ -237,6 +237,7 @@ contains
 
     call mpi_bcast(self%PM3       , 1, mpi_logical, 0, commsander, ier)
     call mpi_bcast(self%AM1       , 1, mpi_logical, 0, commsander, ier)
+    call mpi_bcast(self%AM1DHFR   , 1, mpi_logical, 0, commsander, ier)
     call mpi_bcast(self%AM1D      , 1, mpi_logical, 0, commsander, ier)
     call mpi_bcast(self%MNDO      , 1, mpi_logical, 0, commsander, ier)
     call mpi_bcast(self%MNDOD     , 1, mpi_logical, 0, commsander, ier)
